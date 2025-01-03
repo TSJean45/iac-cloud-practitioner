@@ -1,4 +1,4 @@
-# Infrastructure as Code (IaC) - CloudFormation and Terraform
+# Runcloud Assessment - CloudFormation and Terraform
 
 This repository contains Infrastructure as Code (IaC) for deploying resources on AWS (CloudFormation) and DigitalOcean (Terraform). The project covers the following assessments:
 
