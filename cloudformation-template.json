@@ -1,0 +1,103 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "Provision EC2 instances with a security group and LAMP stack",
+  "Parameters": {
+    "InstanceTypeParam": {
+      "Description": "Instance type for EC2 to allow user to select instance type",
+      "Type": "String",
+      "Default": "t2.micro",
+      "AllowedValues": ["t2.nano", "t2.micro", "t2.medium"]
+    }
+  },
+  "Resources": {
+    "JeanSG": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "Enable SSH and HTTP access",
+        "SecurityGroupIngress": [
+          {
+            "IpProtocol": "tcp",
+            "FromPort": 22,
+            "ToPort": 22,
+            "CidrIp": "0.0.0.0/0"
+          },
+          {
+            "IpProtocol": "tcp",
+            "FromPort": 80,
+            "ToPort": 80,
+            "CidrIp": "0.0.0.0/0"
+          }
+        ]
+      }
+    },
+    "EC2Jean1": {
+      "Type": "AWS::EC2::Instance",
+      "Properties": {
+        "KeyName": "cfkey",
+        "ImageId": "ami-06650ca7ed78ff6fa",
+        "InstanceType": {
+          "Ref": "InstanceTypeParam"
+        },
+        "SecurityGroups": [
+          {
+            "Ref": "JeanSG"
+          }
+        ],
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "EC2withLAMP"
+          }
+        ],
+        "UserData": {
+          "Fn::Base64": {
+            "Fn::Sub": "#!/bin/bash\nsudo apt update -y\nsudo apt upgrade -y\nsudo apt install -y lamp-server^\n"
+          }
+        }
+      }
+    },
+    "EC2Jean2": {
+      "Type": "AWS::EC2::Instance",
+      "Properties": {
+        "KeyName": "cfkey",
+        "ImageId": "ami-06650ca7ed78ff6fa",
+        "InstanceType": {
+          "Ref": "InstanceTypeParam"
+        },
+        "SecurityGroups": [
+          {
+            "Ref": "JeanSG"
+          }
+        ],
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "EC2withoutLAMP1"
+          }
+        ]
+      }
+    },
+    
+    "EC2Jean3": {
+        "Type": "AWS::EC2::Instance",
+        "Properties": {
+          "KeyName": "cfkey",
+          "ImageId": "ami-06650ca7ed78ff6fa",
+          "InstanceType": {
+            "Ref": "InstanceTypeParam"
+          },
+          "SecurityGroups": [
+            {
+              "Ref": "JeanSG"
+            }
+          ],
+          "Tags": [
+            {
+              "Key": "Name",
+              "Value": "EC2withoutLAMP2"
+            }
+          ]
+        }
+      }
+  }
+}

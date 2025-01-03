@@ -1,0 +1,15 @@
+# Ignore Terraform files
+.terraform/
+terraform.tfstate
+terraform.tfstate.backup
+terraform.tfvars
+*.tfvars
+.terraform.lock.hcl
+
+# Ignore any log files
+*.log
+
+# Ignore any other environment-specific or system files
+*.swp
+*.bak
+*.tmp
